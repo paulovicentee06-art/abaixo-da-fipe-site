@@ -96,10 +96,20 @@
   .gallery-note { margin: 22px auto 0; max-width: 54ch; font-size: 13px; color: var(--muted); }
 
   /* demos em vídeo (carro + moto) */
-  .demos { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 40px auto 0; }
+  .demos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 40px auto 0; }
   .demo { margin: 0; }
-  .demo video { display: block; width: 100%; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 22px 46px -22px rgba(0,0,0,.4); background: #0e1c14; }
+  .demo-vid { position: relative; cursor: zoom-in; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 22px 46px -22px rgba(0,0,0,.4); transition: box-shadow .15s ease, transform .15s ease; }
+  .demo-vid:hover { box-shadow: 0 28px 56px -20px rgba(0,0,0,.5); transform: translateY(-2px); }
+  .demo-vid video { display: block; width: 100%; background: #0e1c14; }
+  .demo-vid .expand { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.62); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 999px; pointer-events: none; }
   .demo figcaption { text-align: center; margin-top: 11px; font-size: 13px; font-weight: 700; color: var(--muted); }
+
+  /* popup (lightbox) do vídeo */
+  .lb { position: fixed; inset: 0; z-index: 200; background: rgba(4,10,7,.9); display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .lb[hidden] { display: none; }
+  .lb video { max-width: min(1180px, 96vw); max-height: 90vh; width: auto; height: auto; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6); background: #0e1c14; }
+  .lb-close { position: absolute; top: 16px; right: 20px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
+  .lb-close:hover { background: rgba(255,255,255,.26); }
 
   /* oferta */
   .offer { background: radial-gradient(120% 130% at 10% 0%, var(--hero-1), var(--hero-2) 65%); color: var(--on-hero); border-radius: 22px; padding: 46px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
@@ -204,11 +214,17 @@
     </div>
     <div class="demos">
       <figure class="demo">
-        <video data-src="prints/carro.mp4" muted loop playsinline preload="none" aria-label="Carros abaixo da FIPE carimbados na busca da OLX"></video>
+        <div class="demo-vid" data-full="prints/carro.mp4" role="button" tabindex="0" aria-label="Ampliar vídeo de carros abaixo da FIPE">
+          <video data-src="prints/carro.mp4" muted loop playsinline preload="none"></video>
+          <span class="expand">🔍 Ampliar</span>
+        </div>
         <figcaption>Carros</figcaption>
       </figure>
       <figure class="demo">
-        <video data-src="prints/moto.mp4" muted loop playsinline preload="none" aria-label="Motos abaixo da FIPE carimbadas na busca da OLX"></video>
+        <div class="demo-vid" data-full="prints/moto.mp4" role="button" tabindex="0" aria-label="Ampliar vídeo de motos abaixo da FIPE">
+          <video data-src="prints/moto.mp4" muted loop playsinline preload="none"></video>
+          <span class="expand">🔍 Ampliar</span>
+        </div>
         <figcaption>Motos</figcaption>
       </figure>
     </div>
@@ -324,6 +340,11 @@
   </div>
 </footer>
 
+<div id="lightbox" class="lb" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Fechar">✕</button>
+  <video id="lbVideo" controls loop playsinline></video>
+</div>
+
 <script>
   // Carrega e toca os vídeos só quando entram na tela; pausa quando saem.
   // Evita baixar ~15 MB no load da página (importante pra tráfego pago).
@@ -342,7 +363,32 @@
     }, { threshold: 0.25 });
     vids.forEach(function (v) { io.observe(v); });
   } else {
-    // Fallback: navegador antigo sem IntersectionObserver — carrega direto.
     vids.forEach(function (v) { v.src = v.dataset.src; v.play().catch(function () {}); });
   }
+
+  // Popup (lightbox): clicar no vídeo abre ele grande.
+  var lb = document.getElementById('lightbox');
+  var lbVideo = document.getElementById('lbVideo');
+  function abrirLb(src) {
+    lbVideo.src = src;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lbVideo.play().catch(function () {});
+  }
+  function fecharLb() {
+    lb.hidden = true;
+    lbVideo.pause();
+    lbVideo.removeAttribute('src');
+    lbVideo.load();
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.demo-vid').forEach(function (d) {
+    d.addEventListener('click', function () { abrirLb(d.dataset.full); });
+    d.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirLb(d.dataset.full); }
+    });
+  });
+  document.getElementById('lbClose').addEventListener('click', fecharLb);
+  lb.addEventListener('click', function (e) { if (e.target === lb) fecharLb(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) fecharLb(); });
 </script>
