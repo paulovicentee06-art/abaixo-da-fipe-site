@@ -56,9 +56,9 @@
   .hero .cta-note b { color: #d7f5e2; }
 
   /* print real da OLX no hero */
-  .hero .shot { margin: 0; justify-self: center; max-width: 280px; }
-  .hero .shot img { display: block; width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 34px 70px -22px rgba(0,0,0,.72); background: #fff; }
-  .hero .shot figcaption { text-align: center; margin-top: 13px; font-size: 12.5px; color: #93b7a2; }
+  .hero .shot { margin: 0; justify-self: center; max-width: 460px; width: 100%; }
+  .hero .shot .demo-vid { border-color: rgba(255,255,255,.14); box-shadow: 0 34px 70px -22px rgba(0,0,0,.72); }
+  .hero .shot figcaption { text-align: center; margin-top: 13px; font-size: 13px; font-weight: 700; color: #cdeed9; }
 
   /* ---------- seções claras ---------- */
   section { padding: 70px 0; }
@@ -97,6 +97,7 @@
 
   /* demos em vídeo (carro + moto) */
   .demos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 40px auto 0; }
+  .demo-solo { max-width: 560px; margin: 38px auto 0; }
   .demo { margin: 0; }
   .demo-vid { position: relative; cursor: zoom-in; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 22px 46px -22px rgba(0,0,0,.4); transition: box-shadow .15s ease, transform .15s ease; }
   .demo-vid:hover { box-shadow: 0 28px 56px -20px rgba(0,0,0,.5); transform: translateY(-2px); }
@@ -161,8 +162,11 @@
     </div>
 
     <figure class="shot">
-      <img src="prints/hilux.png" width="280" alt="Toyota Hilux CD 4x4 2.8 Diesel 2021 carimbada 28% abaixo da FIPE, R$ 46.217 de economia, achada na OLX com o Abaixo da FIPE" />
-      <figcaption>Achado real na OLX</figcaption>
+      <div class="demo-vid" data-full="prints/carro.mp4" role="button" tabindex="0" aria-label="Ampliar vídeo: veja funcionando na busca da OLX">
+        <video data-src="prints/carro.mp4" muted loop playsinline preload="none"></video>
+        <span class="expand">🔍 Ampliar</span>
+      </div>
+      <figcaption>▶ Veja funcionando na OLX</figcaption>
     </figure>
   </div>
 </header>
@@ -208,24 +212,17 @@
 <section>
   <div class="wrap">
     <div class="center">
-      <span class="eyebrow">Veja funcionando</span>
-      <h2>O selo aparece sozinho, enquanto você rola.</h2>
-      <p class="kicker sub">Carro ou moto: o desconto é carimbado direto na lista da OLX, na hora.</p>
+      <span class="eyebrow">E as motos?</span>
+      <h2>Com moto é a mesma coisa.</h2>
+      <p class="kicker sub">O desconto abaixo da FIPE aparece carimbado na busca, igualzinho ao carro.</p>
     </div>
-    <div class="demos">
-      <figure class="demo">
-        <div class="demo-vid" data-full="prints/carro.mp4" role="button" tabindex="0" aria-label="Ampliar vídeo de carros abaixo da FIPE">
-          <video data-src="prints/carro.mp4" muted loop playsinline preload="none"></video>
-          <span class="expand">🔍 Ampliar</span>
-        </div>
-        <figcaption>Carros</figcaption>
-      </figure>
+    <div class="demo-solo">
       <figure class="demo">
         <div class="demo-vid" data-full="prints/moto.mp4" role="button" tabindex="0" aria-label="Ampliar vídeo de motos abaixo da FIPE">
           <video data-src="prints/moto.mp4" muted loop playsinline preload="none"></video>
           <span class="expand">🔍 Ampliar</span>
         </div>
-        <figcaption>Motos</figcaption>
+        <figcaption>Motos na OLX</figcaption>
       </figure>
     </div>
   </div>
