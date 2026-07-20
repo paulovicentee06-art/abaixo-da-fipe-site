@@ -95,6 +95,12 @@
   .gallery img { display: block; width: 100%; border-radius: 9px; }
   .gallery-note { margin: 22px auto 0; max-width: 54ch; font-size: 13px; color: var(--muted); }
 
+  /* demos em vídeo (carro + moto) */
+  .demos { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 40px auto 0; }
+  .demo { margin: 0; }
+  .demo video { display: block; width: 100%; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 22px 46px -22px rgba(0,0,0,.4); background: #0e1c14; }
+  .demo figcaption { text-align: center; margin-top: 11px; font-size: 13px; font-weight: 700; color: var(--muted); }
+
   /* oferta */
   .offer { background: radial-gradient(120% 130% at 10% 0%, var(--hero-1), var(--hero-2) 65%); color: var(--on-hero); border-radius: 22px; padding: 46px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
   .offer h2 { color: #fff; }
@@ -124,6 +130,7 @@
     .hero .wrap, .offer { grid-template-columns: 1fr; }
     .cols3 { grid-template-columns: 1fr; }
     .gallery { grid-template-columns: repeat(2, 1fr); }
+    .demos { grid-template-columns: 1fr; }
     .vs-c { font-size: 12.5px; padding: 12px 11px; }
     .hero .wrap { padding-top: 54px; padding-bottom: 54px; }
     .offer { padding: 32px; }
@@ -184,6 +191,26 @@
         <h3>Cada anúncio vem carimbado</h3>
         <p>Na hora, cada carro mostra quanto está abaixo (ou acima) da FIPE, contra a versão certa.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Veja funcionando</span>
+      <h2>O selo aparece sozinho, enquanto você rola.</h2>
+      <p class="kicker sub">Carro ou moto: o desconto é carimbado direto na lista da OLX, na hora.</p>
+    </div>
+    <div class="demos">
+      <figure class="demo">
+        <video data-src="prints/carro.mp4" muted loop playsinline preload="none" aria-label="Carros abaixo da FIPE carimbados na busca da OLX"></video>
+        <figcaption>Carros</figcaption>
+      </figure>
+      <figure class="demo">
+        <video data-src="prints/moto.mp4" muted loop playsinline preload="none" aria-label="Motos abaixo da FIPE carimbadas na busca da OLX"></video>
+        <figcaption>Motos</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -296,3 +323,26 @@
     <a class="btn" href="https://pay.kiwify.com.br/E1gn9fP" target="_blank" rel="noopener" style="font-size:14px; padding:12px 20px;">Assinar</a>
   </div>
 </footer>
+
+<script>
+  // Carrega e toca os vídeos só quando entram na tela; pausa quando saem.
+  // Evita baixar ~15 MB no load da página (importante pra tráfego pago).
+  var vids = document.querySelectorAll('video[data-src]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) {
+          if (!v.src) v.src = v.dataset.src;
+          v.play().catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { io.observe(v); });
+  } else {
+    // Fallback: navegador antigo sem IntersectionObserver — carrega direto.
+    vids.forEach(function (v) { v.src = v.dataset.src; v.play().catch(function () {}); });
+  }
+</script>
