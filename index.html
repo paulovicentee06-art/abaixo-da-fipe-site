@@ -59,6 +59,8 @@
   .hero .shot { margin: 0; justify-self: center; max-width: 460px; width: 100%; }
   .hero .shot .demo-vid { border-color: rgba(255,255,255,.14); box-shadow: 0 34px 70px -22px rgba(0,0,0,.72); }
   .hero .shot figcaption { text-align: center; margin-top: 13px; font-size: 13px; font-weight: 700; color: #cdeed9; }
+  .hero .shot figcaption.vf-btn { cursor: pointer; }
+  .hero .shot figcaption.vf-btn:hover { text-decoration: underline; color: #eafaf0; }
 
   /* ---------- seções claras ---------- */
   section { padding: 70px 0; }
@@ -166,7 +168,7 @@
         <video data-src="prints/carro.mp4" muted loop playsinline preload="none"></video>
         <span class="expand">🔍 Ampliar</span>
       </div>
-      <figcaption>▶ Veja funcionando na OLX</figcaption>
+      <figcaption class="vf-btn" data-full="prints/carro.mp4" role="button" tabindex="0">▶ Veja funcionando na OLX</figcaption>
     </figure>
   </div>
 </header>
@@ -379,7 +381,7 @@
     lbVideo.load();
     document.body.style.overflow = '';
   }
-  document.querySelectorAll('.demo-vid').forEach(function (d) {
+  document.querySelectorAll('[data-full]').forEach(function (d) {
     d.addEventListener('click', function () { abrirLb(d.dataset.full); });
     d.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirLb(d.dataset.full); }
