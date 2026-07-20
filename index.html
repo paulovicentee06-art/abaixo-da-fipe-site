@@ -73,18 +73,18 @@
   .step h3 { font-size: 18px; margin-top: 8px; }
   .step p { color: var(--muted); font-size: 14.5px; margin-top: 7px; }
 
-  /* diferencial: comparação */
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
-  .col { border-radius: var(--radius); padding: 26px; border: 1px solid var(--line); }
-  .col.free { background: var(--surface); }
-  .col.us { background: color-mix(in srgb, var(--green) 8%, var(--surface)); border-color: color-mix(in srgb, var(--green) 35%, var(--line)); }
-  .col h3 { font-size: 17px; }
-  .col .tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
-  .col.free .tag { color: var(--muted); }
-  .col.us .tag { color: var(--green); }
-  .col ul { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 11px; }
-  .col li { display: flex; gap: 10px; font-size: 14.5px; align-items: flex-start; }
-  .col li .ic { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+  /* diferencial: tabela comparativa */
+  .vs { max-width: 880px; margin: 40px auto 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .vs-head, .vs-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .vs-row { border-top: 1px solid var(--line); }
+  .vs-c { padding: 15px 18px; font-size: 14.5px; display: flex; gap: 9px; align-items: flex-start; line-height: 1.4; }
+  .vs-c.us { background: color-mix(in srgb, var(--green) 9%, var(--surface)); border-left: 1px solid var(--line); }
+  .vs-head .vs-c { font-family: var(--disp); font-weight: 800; font-size: 14px; letter-spacing: .02em; }
+  .vs-head .vs-c.olx { color: var(--muted); }
+  .vs-head .vs-c.us { color: var(--green); }
+  .vs .mk { flex: none; font-weight: 800; line-height: 1.4; }
+  .vs .mk.ok { color: var(--green); }
+  .vs .mk.no { color: #c0554b; }
 
   /* galeria de prints reais */
   .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
@@ -119,8 +119,9 @@
 
   @media (max-width: 820px) {
     .hero .wrap, .offer { grid-template-columns: 1fr; }
-    .cols3, .compare { grid-template-columns: 1fr; }
+    .cols3 { grid-template-columns: 1fr; }
     .gallery { grid-template-columns: repeat(2, 1fr); }
+    .vs-c { font-size: 12.5px; padding: 12px 11px; }
     .hero .wrap { padding-top: 54px; padding-bottom: 54px; }
     .offer { padding: 32px; }
   }
@@ -184,27 +185,29 @@
   <div class="wrap">
     <div class="center">
       <span class="eyebrow">O diferencial</span>
-      <h2>"A OLX já mostra abaixo da FIPE." Sim — mas só metade.</h2>
-      <p class="kicker sub">O filtro grátis diz apenas <i>se</i> está abaixo. O que decide a compra é o resto.</p>
+      <h2>O selo da OLX é só o começo.</h2>
+      <p class="kicker sub">Qualquer anúncio pode aparecer como "abaixo da FIPE". A pergunta que decide a compra é outra: está <b>R$ 500 abaixo</b> ou <b>R$ 15.000 abaixo</b>? O Abaixo da FIPE responde na hora, direto na lista de anúncios.</p>
     </div>
-    <div class="compare">
-      <div class="col free">
-        <span class="tag">Filtro grátis da OLX</span>
-        <h3>Mostra que está abaixo</h3>
-        <ul>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="#9aa" stroke-width="2"><path d="M6 6l8 8M14 6l-8 8"/></svg> Não diz <b>quanto</b> abaixo</li>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="#9aa" stroke-width="2"><path d="M6 6l8 8M14 6l-8 8"/></svg> Compara com qualquer versão</li>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="#9aa" stroke-width="2"><path d="M6 6l8 8M14 6l-8 8"/></svg> Não separa barganha de exagero</li>
-        </ul>
+    <div class="vs">
+      <div class="vs-head">
+        <div class="vs-c olx">Selo da OLX</div>
+        <div class="vs-c us">Abaixo da FIPE</div>
       </div>
-      <div class="col us">
-        <span class="tag">Abaixo da FIPE</span>
-        <h3>Mostra o quanto, e contra o quê</h3>
-        <ul>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="var(--green)" stroke-width="2.2"><path d="M4 10l4 4 8-9"/></svg> <b>% exata</b> abaixo e o valor economizado</li>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="var(--green)" stroke-width="2.2"><path d="M4 10l4 4 8-9"/></svg> Casa com a <b>versão certa</b> do anúncio</li>
-          <li><svg class="ic" viewBox="0 0 20 20" fill="none" stroke="var(--green)" stroke-width="2.2"><path d="M4 10l4 4 8-9"/></svg> Esconde loja e mostra só o que bate seu filtro</li>
-        </ul>
+      <div class="vs-row">
+        <div class="vs-c olx"><span class="mk ok">✓</span> Mostra <b>se</b> está abaixo da FIPE</div>
+        <div class="vs-c us"><span class="mk ok">✓</span> Mostra <b>exatamente quanto</b> — em R$ e %</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-c olx"><span class="mk no">✕</span> Não facilita comparar anúncios</div>
+        <div class="vs-c us"><span class="mk ok">✓</span> Compare dezenas de anúncios em segundos</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-c olx"><span class="mk no">✕</span> Pouca informação pra negociar</div>
+        <div class="vs-c us"><span class="mk ok">✓</span> Mais poder pra negociar o preço</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-c olx"><span class="mk no">✕</span> Exige abrir vários anúncios</div>
+        <div class="vs-c us"><span class="mk ok">✓</span> Tudo visível na própria busca</div>
       </div>
     </div>
   </div>
