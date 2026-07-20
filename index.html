@@ -93,7 +93,10 @@
 
   /* galeria de prints reais */
   .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
-  .gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 9px; }
+  .gallery figure { position: relative; margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 9px; cursor: zoom-in; transition: transform .15s ease, box-shadow .15s ease; }
+  .gallery figure:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -20px rgba(0,0,0,.35); }
+  .gallery figure::after { content: "🔍"; position: absolute; right: 15px; bottom: 15px; background: rgba(0,0,0,.62); color: #fff; font-size: 12px; padding: 5px 9px; border-radius: 999px; opacity: 0; transition: opacity .15s ease; pointer-events: none; }
+  .gallery figure:hover::after { opacity: 1; }
   .gallery img { display: block; width: 100%; border-radius: 9px; }
   .gallery-note { margin: 22px auto 0; max-width: 54ch; font-size: 13px; color: var(--muted); }
 
@@ -111,6 +114,7 @@
   .lb { position: fixed; inset: 0; z-index: 200; background: rgba(4,10,7,.9); display: flex; align-items: center; justify-content: center; padding: 20px; }
   .lb[hidden] { display: none; }
   .lb video { max-width: min(1180px, 96vw); max-height: 90vh; width: auto; height: auto; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6); background: #0e1c14; }
+  .lb img { max-width: min(460px, 92vw); max-height: 88vh; width: auto; height: auto; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
   .lb-close { position: absolute; top: 16px; right: 20px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
   .lb-close:hover { background: rgba(255,255,255,.26); }
 
@@ -270,10 +274,10 @@
       <p class="kicker sub">Nada de montagem: são anúncios reais carimbados pelo Abaixo da FIPE. Carro ou moto abaixo da tabela é margem — pra <b>revender com lucro</b> ou pra <b>você andar gastando menos</b>.</p>
     </div>
     <div class="gallery">
-      <figure><img src="prints/fit.png" width="230" alt="Honda Fit EX/S 1.5 Flex 2008 — 26% abaixo da FIPE, R$ 9.441 de economia, anúncio R$ 27.500" /></figure>
-      <figure><img src="prints/hilux.png" width="230" alt="Toyota Hilux CD 4x4 2.8 Diesel 2021 — 28% abaixo da FIPE, R$ 46.217 de economia, anúncio R$ 119.900" /></figure>
-      <figure><img src="prints/xmax.png" width="230" alt="Yamaha XMAX 2021 vermelha — 23% abaixo da FIPE, R$ 5.892 de economia, anúncio R$ 19.500" /></figure>
-      <figure><img src="prints/fan.png" width="230" alt="Honda Fan 160 2017/18 — 20% abaixo da FIPE, R$ 3.949 de economia, anúncio R$ 15.500" /></figure>
+      <figure data-full="prints/fit.png" role="button" tabindex="0"><img src="prints/fit.png" width="230" alt="Honda Fit EX/S 1.5 Flex 2008 — 26% abaixo da FIPE, R$ 9.441 de economia, anúncio R$ 27.500" /></figure>
+      <figure data-full="prints/hilux.png" role="button" tabindex="0"><img src="prints/hilux.png" width="230" alt="Toyota Hilux CD 4x4 2.8 Diesel 2021 — 28% abaixo da FIPE, R$ 46.217 de economia, anúncio R$ 119.900" /></figure>
+      <figure data-full="prints/xmax.png" role="button" tabindex="0"><img src="prints/xmax.png" width="230" alt="Yamaha XMAX 2021 vermelha — 23% abaixo da FIPE, R$ 5.892 de economia, anúncio R$ 19.500" /></figure>
+      <figure data-full="prints/fan.png" role="button" tabindex="0"><img src="prints/fan.png" width="230" alt="Honda Fan 160 2017/18 — 20% abaixo da FIPE, R$ 3.949 de economia, anúncio R$ 15.500" /></figure>
     </div>
     <p class="gallery-note center">Descontos reais capturados na OLX. Os anúncios giram o tempo todo — o Abaixo da FIPE mostra os de agora, na sua busca.</p>
   </div>
@@ -341,7 +345,8 @@
 
 <div id="lightbox" class="lb" hidden>
   <button class="lb-close" id="lbClose" aria-label="Fechar">✕</button>
-  <video id="lbVideo" controls loop playsinline></video>
+  <video id="lbVideo" controls loop playsinline hidden></video>
+  <img id="lbImg" alt="Print ampliado" hidden />
 </div>
 
 <script>
@@ -368,17 +373,27 @@
   // Popup (lightbox): clicar no vídeo abre ele grande.
   var lb = document.getElementById('lightbox');
   var lbVideo = document.getElementById('lbVideo');
+  var lbImg = document.getElementById('lbImg');
   function abrirLb(src) {
-    lbVideo.src = src;
+    if (/\.mp4(\?|$)/i.test(src)) {
+      lbImg.hidden = true; lbImg.removeAttribute('src');
+      lbVideo.hidden = false;
+      lbVideo.src = src;
+      lbVideo.play().catch(function () {});
+    } else {
+      lbVideo.hidden = true; lbVideo.pause(); lbVideo.removeAttribute('src'); lbVideo.load();
+      lbImg.hidden = false;
+      lbImg.src = src;
+    }
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
-    lbVideo.play().catch(function () {});
   }
   function fecharLb() {
     lb.hidden = true;
     lbVideo.pause();
     lbVideo.removeAttribute('src');
     lbVideo.load();
+    lbImg.removeAttribute('src');
     document.body.style.overflow = '';
   }
   document.querySelectorAll('[data-full]').forEach(function (d) {
