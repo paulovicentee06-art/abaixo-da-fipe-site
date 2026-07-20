@@ -66,6 +66,9 @@
   .kicker { max-width: 40ch; margin: 12px auto 0; }
   h2 { font-size: clamp(26px, 3.6vw, 38px); line-height: 1.08; }
   .sub { color: var(--muted); font-size: 17px; }
+  .lead-copy { max-width: 54ch; margin: 16px auto 0; color: var(--muted); font-size: 17px; }
+  .lead-copy p + p { margin-top: 14px; }
+  .lead-copy b { color: var(--ink); }
 
   .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 42px; }
   .step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
@@ -149,9 +152,13 @@
 
 <section>
   <div class="wrap center">
-    <span class="eyebrow">O problema</span>
-    <h2>Comprar usado é um campo minado.</h2>
-    <p class="kicker sub">Você abre a OLX, vê dezenas de anúncios e não sabe quais estão de verdade abaixo da tabela — nem qual versão o vendedor está comparando. Resultado: ou você paga caro, ou a barganha — pra <b>revender com lucro</b> ou pra <b>usar</b> — vai pra quem enxergou o desconto primeiro.</p>
+    <span class="eyebrow">A oportunidade</span>
+    <h2>Quem compra melhor, vende melhor.</h2>
+    <div class="lead-copy">
+      <p>Achar um veículo abaixo da FIPE pode significar <b>milhares de reais</b> de diferença no lucro de uma revenda — ou uma baita economia pra uso próprio.</p>
+      <p>O problema é que garimpar essas oportunidades no olho leva <b>horas</b>.</p>
+      <p>O Abaixo da FIPE mostra automaticamente quanto cada anúncio está abaixo da FIPE, e você acha os melhores negócios em <b>segundos</b>.</p>
+    </div>
   </div>
 </section>
 
